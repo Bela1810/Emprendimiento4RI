@@ -360,6 +360,7 @@ namespace Emprendimiento
                                 
                             }
                             else
+
                             {
                                 Console.WriteLine("No se encontraron ideas de negocio o ninguna impacta a departamentos.");
                             }
