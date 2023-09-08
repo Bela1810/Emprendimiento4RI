@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emprendimiento4RI", "Emprendimiento4RI\Emprendimiento4RI.csproj", "{1C92E789-B626-41A2-A0D3-C101B8FFC570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emprendimiento", "Emprendimiento\Emprendimiento.csproj", "{804805B7-BC05-4DFA-9746-0CFF84DDA01F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmprendimientoPruebasUnitarias", "Emprendimiento\EmprendimientoPruebasUnitarias.csproj", "{804805B7-BC05-4DFA-9746-0CFF84DDA01F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
