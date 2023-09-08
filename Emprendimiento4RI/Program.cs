@@ -26,50 +26,93 @@ namespace Emprendimiento
 
     public class Idea
     {
-        public List<Miembro> _Miembros { get; set; } = new List<Miembro>();
-        public int CódigoIdea { get; private set; }
+        public List<Miembro> Miembros { get; set; } = new List<Miembro>();
+        public int CodigoIdea { get; private set; }
         public string NombreIdea { get; set; }
 
         /* Aquí tendremos el color o colores que impacta la idea */
-        public List<string> ImpactosEconómicosIdea { get; set; } = new List<string>();
+        public List<string> ImpactosEconomicosIdea { get; set; } = new List<string>();
 
-        public float InversiónRequeridaIdea { get; set; }
+        public float InversionRequeridaIdea { get; set; }
         public float ObjetivosDeIngresosIdea { get; set; }
 
         /* Aquí tendremos la herramienta o herramientas que tiene la idea */
-        public List<int> Herramientas4RevoluciónIndustrialIdea { get; set; } = new List<int>();
+        public List<int> Herramientas4RevolucionIndustrialIdea { get; set; } = new List<int>();
 
-        public Idea(string nombreIdea, float inversiónRequeridaIdea, float objetivosDeIngresosIdea)
+        private static int ultimoCodigoGenerado = 0;
+
+
+
+        public Idea(string nombreIdea, float inversionRequeridaIdea, float objetivosDeIngresosIdea)
         {
-            CódigoIdea = GenerarCodigoUnico();
+
+            CodigoIdea = GenerarCodigoUnico();
             this.NombreIdea = nombreIdea;
-            this.InversiónRequeridaIdea = inversiónRequeridaIdea;
+            this.InversionRequeridaIdea = inversionRequeridaIdea;
             this.ObjetivosDeIngresosIdea = objetivosDeIngresosIdea;
+
+
+
         }
 
-        public List<int> DevolverHerramientas(int herramientas4RI)
+        public List<int> AgregarHerramientas(int herramientas4RI)
         {
-            Herramientas4RevoluciónIndustrialIdea.Add(herramientas4RI);
-            return Herramientas4RevoluciónIndustrialIdea;
+            Herramientas4RevolucionIndustrialIdea.Add(herramientas4RI);
+            return Herramientas4RevolucionIndustrialIdea;
         }
 
-        public List<string> DevolverImpactosEconómicosIdea(string color)
+        public List<string> AgregarImpactosEconomicosIdea(string color)
         {
-            ImpactosEconómicosIdea.Add(color);
-            return ImpactosEconómicosIdea;
+            ImpactosEconomicosIdea.Add(color);
+            return ImpactosEconomicosIdea;
         }
 
-        private static Random random = new Random();
-        private int GenerarCodigoUnico()
+        private static int GenerarCodigoUnico()
         {
-            int codigoNuevo = random.Next(100, 999);
-            return codigoNuevo;
+            ultimoCodigoGenerado++;
+            return ultimoCodigoGenerado;
         }
+
+        public Miembro ObtenerMiembroPorId(int idMiembro)
+        {          
+            return Miembros.FirstOrDefault(miembro => miembro.Id == idMiembro);
+        }
+
 
         public void AgregarMiembro(int id, string nombre, string apellidos, string rol, string email)
         {
             Miembro nuevoMiembro = new Miembro(id, nombre, apellidos, rol, email);
-            _Miembros.Add(nuevoMiembro);
+            Miembros.Add(nuevoMiembro);
+        }
+
+        public bool AgregarIntegrante(Miembro miembro)
+        {
+            if (Miembros.Contains(miembro) || miembro == null)
+            {
+                return false;
+            }
+
+            else
+            {
+                Miembros.Add(miembro);
+                return true;
+            }
+
+        }
+
+        public void EliminarIntegrante(Miembro miembro)
+        {
+            Miembros.Remove(miembro);
+        }
+
+        public void ModificarValorInversion(int nuevoValorInversion)
+        {
+            InversionRequeridaIdea = nuevoValorInversion;
+        }
+
+        public void ModificarValorTotal(int nuevoValorTotal)
+        {
+            ObjetivosDeIngresosIdea = nuevoValorTotal;
         }
 
 
@@ -79,9 +122,9 @@ namespace Emprendimiento
     {
         public List<Idea> IdeasDesarrolloRegional { get; set; } = new List<Idea>();
 
-        public Dictionary<string, string> ColoresEconomía = new Dictionary<string, string>();
+        public Dictionary<string, string> ColoresEconomia = new Dictionary<string, string>();
 
-        public Dictionary<int, string> Herramientas4RevoluciónIndustrial = new Dictionary<int, string>();
+        public Dictionary<int, string> Herramientas4RevolucionIndustrial = new Dictionary<int, string>();
 
         public Dictionary<string, string> Departamentos = new Dictionary<string, string>();
 
@@ -89,27 +132,30 @@ namespace Emprendimiento
 
         public Dictionary<string, List<string>> ColoresDepartamentos = new Dictionary<string, List<string>>();
 
+        public Idea miIdeaEnDesarrolloRegional;
+
         public DesarrolloRegional()
         {
-            ColoresEconomía["Verde"] = "Relacionado con la agricultura, ganadería, pesca y minería.";
-            ColoresEconomía["Azul"] = "Incluye industria y manufactura, contribuye al crecimiento económico mediante la producción de bienes.";
-            ColoresEconomía["Rojo"] = "Compuesto por servicios como educación, salud y finanzas, es esencial para el bienestar económico y social.";
-            ColoresEconomía["Morado"] = "Centrado en la investigación y desarrollo, impulsa la innovación y la tecnología avanzada.";
-            ColoresEconomía["Dorado"] = "Involucra al gobierno y organizaciones sin fines de lucro, proporciona servicios públicos y sociales.";
-            ColoresEconomía["Amarillo"] = "Representa el sector de la construcción y obras públicas, impulsando el desarrollo de infraestructura.";
-            ColoresEconomía["Naranja"] = "Incluye el sector de la energía, contribuyendo a la producción y distribución de energía.";
 
-            Herramientas4RevoluciónIndustrial[1] = "Inteligencia Artificial y Aprendizaje Automático";
-            Herramientas4RevoluciónIndustrial[2] = "Internet de las Cosas (IoT)";
-            Herramientas4RevoluciónIndustrial[3] = "Blockchain y Criptomonedas";
-            Herramientas4RevoluciónIndustrial[4] = "Realidad Virtual (VR) y Realidad Aumentada (AR)";
-            Herramientas4RevoluciónIndustrial[5] = "Impresión 3D (Fabricación Aditiva)";
-            Herramientas4RevoluciónIndustrial[6] = "Robótica Avanzada";
-            Herramientas4RevoluciónIndustrial[7] = "Computación Cuántica";
-            Herramientas4RevoluciónIndustrial[8] = "Biología Sintética y Genómica";
-            Herramientas4RevoluciónIndustrial[9] = "Nanotecnología";
-            Herramientas4RevoluciónIndustrial[10] = "Big Data y Análisis Predictivo";
-            Herramientas4RevoluciónIndustrial[11] = "Automatización Industrial y Robótica Industrial";
+            ColoresEconomia["Verde"] = "Relacionado con la agricultura, ganadería, pesca y minería.";
+            ColoresEconomia["Azul"] = "Incluye industria y manufactura, contribuye al crecimiento económico mediante la producción de bienes.";
+            ColoresEconomia["Rojo"] = "Compuesto por servicios como educación, salud y finanzas, es esencial para el bienestar económico y social.";
+            ColoresEconomia["Morado"] = "Centrado en la investigación y desarrollo, impulsa la innovación y la tecnología avanzada.";
+            ColoresEconomia["Dorado"] = "Involucra al gobierno y organizaciones sin fines de lucro, proporciona servicios públicos y sociales.";
+            ColoresEconomia["Amarillo"] = "Representa el sector de la construcción y obras públicas, impulsando el desarrollo de infraestructura.";
+            ColoresEconomia["Naranja"] = "Incluye el sector de la energía, contribuyendo a la producción y distribución de energía.";
+
+            Herramientas4RevolucionIndustrial[1] = "Inteligencia Artificial y Aprendizaje Automático";
+            Herramientas4RevolucionIndustrial[2] = "Internet de las Cosas (IoT)";
+            Herramientas4RevolucionIndustrial[3] = "Blockchain y Criptomonedas";
+            Herramientas4RevolucionIndustrial[4] = "Realidad Virtual (VR) y Realidad Aumentada (AR)";
+            Herramientas4RevolucionIndustrial[5] = "Impresión 3D (Fabricación Aditiva)";
+            Herramientas4RevolucionIndustrial[6] = "Robótica Avanzada";
+            Herramientas4RevolucionIndustrial[7] = "Computación Cuántica";
+            Herramientas4RevolucionIndustrial[8] = "Biología Sintética y Genómica";
+            Herramientas4RevolucionIndustrial[9] = "Nanotecnología";
+            Herramientas4RevolucionIndustrial[10] = "Big Data y Análisis Predictivo";
+            Herramientas4RevolucionIndustrial[11] = "Automatización Industrial y Robótica Industrial";
 
             Departamentos["91000"] = "Amazonas";
             Departamentos["05000"] = "Antioquia";
@@ -179,44 +225,46 @@ namespace Emprendimiento
 
         }
 
-        public bool ExisteIdeaConCodigo(int codigo)
+
+
+        public Idea? ObtenerIdeaPorCodigo(int codigo)
         {
-            // Itera a través de la lista de Ideas y verifica si alguno tiene el código dado
-            foreach (Idea idea in IdeasDesarrolloRegional)
+            if (codigo < 0)
             {
-                if (idea.CódigoIdea == codigo)
-                {
-                    return true; // El código existe en la lista
-                }
+                return null;
             }
-            return false; // El código no existe en la lista
+            else
+            {
+                return IdeasDesarrolloRegional.FirstOrDefault(idea => idea.CodigoIdea == codigo);
+
+            }
+
         }
 
-        public Idea ObtenerIdeaPorCodigo(int codigo)
+
+
+        public void AgregarIdeaAdesarrollo(Idea idea)
         {
-            return IdeasDesarrolloRegional.FirstOrDefault(idea => idea.CódigoIdea == codigo);
+            IdeasDesarrolloRegional.Add(idea);
+
         }
-
-       
-
-
-
 
     }
 
     public class Controlador
     {
-        private DesarrolloRegional desarrolloRegional;
-        public Idea EncontrarIdeaQueImpactaMásDepartamentos(DesarrolloRegional desarrolloRegional)
+
+
+        public static Idea? EncontrarIdeaQueImpactaMasDepartamentos(DesarrolloRegional desarrolloRegional)
         {
 
-            Idea ideaMásImpactante = null;
-            int máximoConteoDepartamentos = 0;
+            Idea? ideaMasImpactante = null;
+            int maximoConteoDepartamentos = 0;
 
-            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
+            foreach (Idea? idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
                 int conteoDepartamentos = 0;
-                foreach (string color in idea.ImpactosEconómicosIdea)
+                foreach (string color in idea.ImpactosEconomicosIdea)
                 {
                     if (desarrolloRegional.ColoresDepartamentos.ContainsKey(color))
                     {
@@ -224,23 +272,23 @@ namespace Emprendimiento
                     }
                 }
 
-                if (conteoDepartamentos > máximoConteoDepartamentos)
+                if (conteoDepartamentos > maximoConteoDepartamentos)
                 {
-                    ideaMásImpactante = idea;
-                    máximoConteoDepartamentos = conteoDepartamentos;
+                    ideaMasImpactante = idea;
+                    maximoConteoDepartamentos = conteoDepartamentos;
                 }
             }
 
-            return ideaMásImpactante;
+            return ideaMasImpactante;
         }
 
-        public List<string> DevolverDepartamentosAfectados(List<Idea> ideas, DesarrolloRegional desarrolloRegional)
+        public static List<string> DevolverDepartamentosAfectados(DesarrolloRegional desarrolloRegional)
         {
-            List<string> departamentosAfectados = new List<string>();
+            List<string> departamentosAfectados = new();
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
-                foreach (string color in idea.ImpactosEconómicosIdea)
+                foreach (string color in idea.ImpactosEconomicosIdea)
                 {
                     if (desarrolloRegional.ColoresDepartamentos.ContainsKey(color))
                     {
@@ -252,69 +300,64 @@ namespace Emprendimiento
             return departamentosAfectados.Distinct().ToList();
         }
 
-        public Idea EncontrarIdeaConMásIngresos(List<Idea> ideas)
+        public static Idea? EncontrarIdeaConMasIngresos(DesarrolloRegional desarrolloRegional)
         {
-            Idea ideaConMásIngresos = null;
+            Idea? ideaConMasIngresos = null;
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
-                if (ideaConMásIngresos == null || idea.ObjetivosDeIngresosIdea > ideaConMásIngresos.ObjetivosDeIngresosIdea)
+                if (ideaConMasIngresos == null || idea.ObjetivosDeIngresosIdea > ideaConMasIngresos.ObjetivosDeIngresosIdea)
                 {
-                    ideaConMásIngresos = idea;
+                    ideaConMasIngresos = idea;
                 }
             }
 
-            return ideaConMásIngresos;
+            return ideaConMasIngresos;
         }
 
-        public List<Idea> EncontrarIdeasMásRentables(List<Idea> ideas)
+        public static List<Idea> EncontrarIdeasMasRentables(DesarrolloRegional desarrolloRegional)
         {
-            var ideasOrdenadas = ideas.OrderByDescending(idea => idea.ObjetivosDeIngresosIdea / idea.InversiónRequeridaIdea);
-            var rentabilidadMáxima = ideasOrdenadas.First().ObjetivosDeIngresosIdea / ideasOrdenadas.First().InversiónRequeridaIdea;
-
-            var ideasMásRentables = ideasOrdenadas.TakeWhile(idea => idea.ObjetivosDeIngresosIdea / idea.InversiónRequeridaIdea == rentabilidadMáxima).ToList();
-
-            return ideasMásRentables;     
+            var ideasOrdenadas = desarrolloRegional.IdeasDesarrolloRegional.OrderByDescending(idea => idea.ObjetivosDeIngresosIdea / idea.InversionRequeridaIdea);
+            var ideasMasRentables = ideasOrdenadas.Take(3).ToList();
+            return ideasMasRentables;
         }
 
 
-        public List<Idea> EncontrarIdeasImpactandoMásDeTresDepartamentos(DesarrolloRegional desarrolloRegional)
+
+        public static List<Idea> EncontrarIdeasImpactandoMasDeTresDepartamentos(DesarrolloRegional desarrolloRegional)
         {
-            List<Idea> ideasImpactandoMásDeTresDepartamentos = new List<Idea>();
+            List<Idea> ideasImpactandoMasDeTresDepartamentos = new();
 
-            // Encontrar los colores que están asociados con más de 3 departamentos
-            List<string> coloresImpactandoMásDeTresDepartamentos = new List<string>();
-            foreach (KeyValuePair<string, List<string>> par in desarrolloRegional.ColoresDepartamentos)
-            {
-                if (par.Value.Count > 3)
-                {
-                    coloresImpactandoMásDeTresDepartamentos.Add(par.Key);
-                }
-            }
-
-            // Buscar en la lista de ideas para encontrar las ideas que tengan esos colores en su lista de impactos económicos
+            // Buscar en la lista de ideas para encontrar las ideas que impacten a más de 3 departamentos
             for (int i = 0; i < desarrolloRegional.IdeasDesarrolloRegional.Count; i++)
             {
                 Idea idea = desarrolloRegional.IdeasDesarrolloRegional[i];
-                for (int j = 0; j < idea.ImpactosEconómicosIdea.Count; j++)
+                int conteoDepartamentos = 0;
+                for (int j = 0; j < idea.ImpactosEconomicosIdea.Count; j++)
                 {
-                    string color = idea.ImpactosEconómicosIdea[j];
-                    if (coloresImpactandoMásDeTresDepartamentos.Contains(color))
+                    string color = idea.ImpactosEconomicosIdea[j];
+                    if (desarrolloRegional.ColoresDepartamentos.ContainsKey(color))
                     {
-                        ideasImpactandoMásDeTresDepartamentos.Add(idea);
-                        break;
+                        conteoDepartamentos += desarrolloRegional.ColoresDepartamentos[color].Count;
                     }
+                }
+                if (conteoDepartamentos > 3)
+                {
+                    ideasImpactandoMasDeTresDepartamentos.Add(idea);
                 }
             }
 
-            return ideasImpactandoMásDeTresDepartamentos;
+            return ideasImpactandoMasDeTresDepartamentos;
         }
 
-        public float CalcularIngresosTotales(List<Idea> ideas)
+
+
+
+        public static float CalcularIngresosTotales(DesarrolloRegional desarrolloRegional)
         {
             float ingresosTotales = 0;
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
                 ingresosTotales += idea.ObjetivosDeIngresosIdea;
             }
@@ -322,40 +365,40 @@ namespace Emprendimiento
             return ingresosTotales;
         }
 
-        public float CalcularInversiónTotal(List<Idea> ideas)
+        public static float CalcularInversionTotal(DesarrolloRegional desarrolloRegional)
         {
-            float inversiónTotal = 0;
+            float inversionTotal = 0;
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
-                inversiónTotal += idea.InversiónRequeridaIdea;
+                inversionTotal += idea.InversionRequeridaIdea;
             }
 
-            return inversiónTotal;
+            return inversionTotal;
         }
 
-        public Idea EncontrarIdeaConMásHerramientas4RI(List<Idea> ideas)
+        public static Idea? EncontrarIdeaConMasHerramientas4RI(DesarrolloRegional desarrolloRegional)
         {
-            Idea ideaConMásHerramientas4RI = null;
+            Idea? ideaConMasHerramientas4RI = null;
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
-                if (ideaConMásHerramientas4RI == null || idea.Herramientas4RevoluciónIndustrialIdea.Count > ideaConMásHerramientas4RI.Herramientas4RevoluciónIndustrialIdea.Count)
+                if (ideaConMasHerramientas4RI == null || idea.Herramientas4RevolucionIndustrialIdea.Count > ideaConMasHerramientas4RI.Herramientas4RevolucionIndustrialIdea.Count)
                 {
-                    ideaConMásHerramientas4RI = idea;
+                    ideaConMasHerramientas4RI = idea;
                 }
             }
 
-            return ideaConMásHerramientas4RI;
+            return ideaConMasHerramientas4RI;
         }
 
-        public int ContarIdeasConInteligenciaArtificial(List<Idea> ideas)
+        public static int ContarIdeasConInteligenciaArtificial(DesarrolloRegional desarrolloRegional)
         {
             int conteo = 0;
 
-            foreach (Idea idea in ideas)
+            foreach (Idea idea in desarrolloRegional.IdeasDesarrolloRegional)
             {
-                if (idea.Herramientas4RevoluciónIndustrialIdea.Contains(1))
+                if (idea.Herramientas4RevolucionIndustrialIdea.Contains(1))
                 {
                     conteo++;
                 }
@@ -364,27 +407,9 @@ namespace Emprendimiento
             return conteo;
         }
 
-        public void AgregarIntegrante(Idea idea, Miembro miembro)
-        {
-            idea._Miembros.Add(miembro);
-        }
 
-        public void EliminarIntegrante(Idea idea, Miembro miembro)
-        {
-            idea._Miembros.Remove(miembro);
-        }
 
-        public void ModificarValorInversion(Idea idea, int nuevoValorInversion)
-        {
-            idea.InversiónRequeridaIdea = nuevoValorInversion;
-        }
-
-        public void ModificarValorTotal(Idea idea, int nuevoValorTotal)
-        {
-            idea.ObjetivosDeIngresosIdea = nuevoValorTotal;
-        }
-
-        public List<Idea> ObtenerTodasLasIdeas()
+        public static List<Idea> ObtenerTodasLasIdeas(DesarrolloRegional desarrolloRegional)
         {
             // Retorna todas las ideas almacenadas en forma de lista
             return desarrolloRegional.IdeasDesarrolloRegional;
@@ -393,4 +418,8 @@ namespace Emprendimiento
 
 
     }
+
+            
+
+
 }
