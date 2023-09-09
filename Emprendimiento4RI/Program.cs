@@ -69,8 +69,7 @@ namespace Emprendimiento
 
         private static int GenerarCodigoUnico()
         {
-            ultimoCodigoGenerado++;
-            return ultimoCodigoGenerado;
+            return ++ultimoCodigoGenerado;
         }
 
         public Miembro ObtenerMiembroPorId(int idMiembro)
