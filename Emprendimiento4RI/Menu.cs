@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace Emprendimiento
 {
-    class Program
+    class Menu
     {
         static void Main(string[] args)
         {
@@ -34,6 +37,8 @@ namespace Emprendimiento
                     Console.WriteLine("11. Suma total de la inversión de todas las ideas de negocio");
                     Console.WriteLine("12. Nombre de la idea de negocio con sus integrantes que use más herramientas de 4RI");
                     Console.WriteLine("13. Cantidad de ideas de negocio con inteligencia artificial");
+                    Console.WriteLine("14. ideas de negocio con Desarrollo Sostenible");
+                    Console.WriteLine("15. Ideas de negocio que la rentabilidad sea mayor que el promedio de rentabilidad");
                 }
 
                 
@@ -112,10 +117,11 @@ namespace Emprendimiento
                                 Console.WriteLine("9. Nanotecnología");
                                 Console.WriteLine("10.Big Data y Análisis Predictivo");
                                 Console.WriteLine("11.Automatización Industrial y Robótica Industrial ");
+                                Console.WriteLine("12.Desarrollo Sostenible ");
 
                                 int opcionHerramienta = int.Parse(Console.ReadLine());
 
-                                if (opcionHerramienta >= 1 && opcionHerramienta <= 11)
+                                if (opcionHerramienta >= 1 && opcionHerramienta <= 12)
                                 {
                                     // Llama al método DevolverHerramientas para agregar la herramienta seleccionada
                                     nuevaIdea.AgregarHerramientas(opcionHerramienta);
@@ -347,17 +353,18 @@ namespace Emprendimiento
                             break;
 
                         case 6:
-                            Console.WriteLine("Mostrar la Idea de Negocio que impacta más departamentos:");
+                            Console.WriteLine("Mostrar la Idea de Negocio que impacta más departamentos");
 
 
                             Idea ideaMasImpactante = Controlador.EncontrarIdeaQueImpactaMasDepartamentos(desarrolloRegional);
 
                             if (ideaMasImpactante != null)
                             {
-                                Console.WriteLine("La idea que impacta más departamentos es:");
+                                Console.WriteLine("La idea que impacta más departamentos es");
                                 Console.WriteLine($"Código de Idea: {ideaMasImpactante.CodigoIdea}");
                                 Console.WriteLine($"Nombre de la Idea: {ideaMasImpactante.NombreIdea}");
-                                
+
+
                             }
                             else
 
@@ -459,6 +466,37 @@ namespace Emprendimiento
 
                             Console.WriteLine($"Cantidad de Ideas de Negocio con Inteligencia Artificial: {cantidadIdeasInteligenciaArtificial}");
                             break;
+
+                        case 14:
+
+                            List <Idea> ideasDesarrolloSostenible = Controlador.ContarIdeasConDesarrolloSostenible(desarrolloRegional);
+
+                            foreach (Idea idea in ideasDesarrolloSostenible)
+                            {
+                                Console.WriteLine("Detalles de la Idea de Negocio:");
+                                Console.WriteLine($"Código de Idea: {idea.CodigoIdea}");
+                                Console.WriteLine($"Nombre de la Idea: {idea.NombreIdea}");
+                                Console.WriteLine($"Inversión Requerida: {idea.InversionRequeridaIdea}");
+                                Console.WriteLine($"Total de Ingresos: {idea.ObjetivosDeIngresosIdea}");
+                                Console.WriteLine($"Impacto Económico: {string.Join(", ", idea.ImpactosEconomicosIdea)}");
+                            }
+                            break;
+
+                        case 15:
+
+                            List<Idea> ideasPromedioRentables = Controlador.PromedioIdeasMasRentables(desarrolloRegional);
+
+                            foreach (Idea idea in ideasPromedioRentables)
+                            {
+                                Console.WriteLine("Detalles de la Idea de Negocio:");
+                                Console.WriteLine($"Código de Idea: {idea.CodigoIdea}");
+                                Console.WriteLine($"Nombre de la Idea: {idea.NombreIdea}");
+                                Console.WriteLine($"Inversión Requerida: {idea.InversionRequeridaIdea}");
+                                Console.WriteLine($"Total de Ingresos: {idea.ObjetivosDeIngresosIdea}");
+                                Console.WriteLine($"Impacto Económico: {string.Join(", ", idea.ImpactosEconomicosIdea)}");
+                            }
+                            break;
+
 
 
                         default:
